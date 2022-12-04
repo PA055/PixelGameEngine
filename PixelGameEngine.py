@@ -303,12 +303,12 @@ class PixelEngine:
             if dx == 0:
                 for y in range(y0, y1 + 1):
                     points.append((x0, y))
+                points.append((x1, y1))
                 return points
 
             if dy == 0:
-                return [(x1, y1)]
+                return [(x0, y0), (x1, y1)]
                 
-                    
             
             flag = True
             
@@ -322,6 +322,8 @@ class PixelEngine:
                 dx = abs(x1 - x0)
                 dy = abs(y1 - y0)
                 mm = True
+
+            
                 
             p0 = 2 * dx - dy
             x = x0
@@ -361,7 +363,7 @@ class PixelEngine:
             return edges
 
         edges = getPolygonEdges(*corners)
-        print(dict(Counter([item for item in list(map(lambda point: point if point[1] == 20 else None, edges)) if item is not None])))
+        print(dict(Counter([item for item in list(map(lambda point: point if point[1] == 15 else None, edges)) if item is not None])))
         minx = min(map(lambda x: x[0], corners))
         maxx = max(map(lambda x: x[0], corners))
         miny = min(map(lambda x: x[1], corners))
@@ -380,11 +382,11 @@ class PixelEngine:
             self.drawPolygon(border_color, *corners, thickness=border_width)
         else:
             self.drawPolygon(color, *corners, thickness=border_width)
-        for point in edges:
-            self.setPixel(point, (0, 255, 0))
-        for point in corners:
-            self.setPixel(point, (0, 0, 255))
+        #for point in edges:
+        #    self.setPixel(point, (0, 255, 0))
+        #for point in corners:
+        #    self.setPixel(point, (0, 0, 255))
 
-    # TODO text, sprite, color class
+    # TODO text, curves, sprite, color class
 
     
