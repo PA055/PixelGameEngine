@@ -387,6 +387,24 @@ class PixelEngine:
         #for point in corners:
         #    self.setPixel(point, (0, 0, 255))
 
+    def drawBezierCurve(self, color: Iterable[int], *points: Iterable[int], thickness: int=1, accuracy: int=10000):
+        print(points)
+        Ubound = len(points)
+        binom = lambda n, k: math.factorial(n) / (math.factorial(k) * (math.factorial(n - k)))
+        fbezier = lambda t, x_or_y: sum([binom(Ubound, n) * (1 - t)**(Ubound - n) * (t**n) * (points[n + 1][x_or_y]) for n in range(Ubound - 1)])
+        Vbezier = lambda t: list((fbezier(t, 0), fbezier(t, 1)))
+
+        edges = set()
+        for t in range(0, accuracy + 1):
+            p = Vbezier(t / accuracy)
+            p = (round(p[0]), round(p[1]))
+            if not p in edges:
+                print(str(t / accuracy) + ':', p)
+            edges.add(p)
+        
+        for point in edges:
+            self.setThickPixel(point, color, thickness)
+
     # TODO text, curves, sprite, color class
 
     
