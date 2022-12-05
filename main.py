@@ -4,12 +4,12 @@ from PixelGameEngine import PixelEngine
 
 xpos = 0
 
-Game = PixelEngine('Test', 480, 780, 12, 12, scaleing_factor=1, FPS=60)
+Game = PixelEngine('Test', 480, 780, 12, 12, scaleing_factor=0.5, FPS=60)
 Game.setBackground((0, 255, 255))
 
 
 def Start(game):
-    game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (35, 5), (32, 37), (60, 36))
+    #game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (61, -30), (32, 37), (60, 36), (5, 5))
     #game.fillPolygon((255, 0, 0), (22, 10), (40, 15), (52, 11), (36, 20), (34, 20), (34, 22), (30, 38), border_color=(0, 0, 0), border_width=1)
 
 def Update(game):

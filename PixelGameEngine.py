@@ -272,7 +272,7 @@ class PixelEngine:
         for i in range(len(corners)):
             self.drawLine(corners[i - 1], corners[i], color, thickness)
 
-    def fillPolygon(self, color, *corners: Iterable[int], border_color: Iterable[int]=(0, 0, 0), border_width: int=0):
+    def fillPolygon(self, color: Iterable[int], *corners: Iterable[int], border_color: Iterable[int]=(0, 0, 0), border_width: int=0):
         def getLineEdges(start, end):
             x0 = round(start[0])
             x1 = round(end[0])
@@ -407,6 +407,8 @@ class PixelEngine:
         for point in points:
             self.setPixel(point, (0, 0, 255))
 
+    def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
+        pass
     # TODO text, sprite, color class
 
     
