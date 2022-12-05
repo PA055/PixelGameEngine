@@ -386,6 +386,7 @@ class PixelEngine:
         #    self.setPixel(point, (0, 255, 0))
         #for point in corners:
         #    self.setPixel(point, (0, 0, 255))
+        return
 
     def drawBezierCurve(self, color: Iterable[int], *points: Iterable[int], thickness: int=1, accuracy: int=10000):
         print(points)
@@ -406,6 +407,6 @@ class PixelEngine:
         for point in points:
             self.setPixel(point, (0, 0, 255))
 
-    # TODO text, curves, sprite, color class
+    # TODO text, sprite, color class
 
     
