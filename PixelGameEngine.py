@@ -26,6 +26,7 @@ class PixelEngine:
         self.pixels = [[(0, 0, 0) for i in range(self.WINDOW_PIXEL_HEIGHT)] for j in range(self.WINDOW_PIXEL_WIDTH)]
 
         self.__keydown = False
+        self.__isRunning = False
         
         if FPS is not None:
             self.FPS = FPS
@@ -42,14 +43,18 @@ class PixelEngine:
 
     def Start(self, start: Callable=lambda x:1, update:Callable=lambda x:1, end:Callable=lambda x:1):
         start(self)
+        self.__isRunning = True
         self.loop(update, end)
+        end(self)
+        pygame.quit()
+        sys.exit()
         '''
         gl = threading.Thread(target=self.loop, args=(update, end))
         gl.start()
         '''
     
     def loop(self, update, end):
-        while True:
+        while self.__isRunning:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     end(self)
@@ -61,7 +66,7 @@ class PixelEngine:
                     self.__keydown = True
 
                     
-            update(self)
+            self.__isRunning = update(self)
 
             self.drawScreen(self.pixels)
             pygame.display.update()
@@ -408,6 +413,8 @@ class PixelEngine:
             self.setPixel(point, (0, 0, 255))
 
     def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
+        pass
+    def drawSprite(self, point: Iterable[int], tint: Iterable[int], scale: float=1):
         pass
     # TODO text, sprite, color class
 

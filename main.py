@@ -11,6 +11,7 @@ Game.setBackground((0, 255, 255))
 def Start(game):
     #game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (61, -30), (32, 37), (60, 36), (5, 5))
     #game.fillPolygon((255, 0, 0), (22, 10), (40, 15), (52, 11), (36, 20), (34, 20), (34, 22), (30, 38), border_color=(0, 0, 0), border_width=1)
+    pass
 
 def Update(game):
     keysDown = game.getKeyPressed()
@@ -18,7 +19,7 @@ def Update(game):
         x, y = pygame.mouse.get_pos()
         print((x // game.PIXEL_WIDTH, y // game.PIXEL_HEIGHT))
         print(game.FPS)
-    
+    return True
 
 print(Game.WPW, Game.WPH)
 Game.Start(Start, Update)
