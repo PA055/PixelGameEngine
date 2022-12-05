@@ -9,7 +9,7 @@ Game.setBackground((0, 255, 255))
 
 
 def Start(game):
-    game.drawBezierCurve((0, 0, 0), (5, 8), (3, 19), (20, 12))
+    game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (35, 5), (32, 37), (60, 36))
     #game.fillPolygon((255, 0, 0), (22, 10), (40, 15), (52, 11), (36, 20), (34, 20), (34, 22), (30, 38), border_color=(0, 0, 0), border_width=1)
 
 def Update(game):
