@@ -115,7 +115,6 @@ class PixelEngine:
                 self.pixels[point[0]][point[1]] = tuple([(ca[i] * aa + cb[i] * ab * (1 - aa)) / ao for i in range(3)]) + (ao,)
             else:
                 self.pixels[point[0]][point[1]] = tuple([math.pow((math.pow(ca[i], self.__gamma) * aa + math.pow(cb[i], self.__gamma) * ab * (1 - aa)) / ao, 1 / self.__gamma) for i in range(3)]) + (ao,)
-                print(self.pixels[point[0]][point[1]])
 
     def setPixelXY(self, x: int, y: int, color: Iterable[int]):
         self.setPixel((x, y), color)
@@ -413,7 +412,6 @@ class PixelEngine:
         return
 
     def drawBezierCurve(self, color: Iterable[int], *points: Iterable[int], thickness: int=1, accuracy: int=10000):
-        print(points)
         Ubound = len(points) - 1
         binom = lambda n, k: math.factorial(n) / (math.factorial(k) * (math.factorial(n - k)))
         fbezier = lambda t, x_or_y: sum([binom(Ubound, n) * (1 - t)**(Ubound - n) * (t**n) * (points[n + 0][x_or_y]) for n in range(0, Ubound + 1)])
@@ -428,8 +426,11 @@ class PixelEngine:
         
         for point in edges:
             self.setThickPixel(point, color, thickness)
-        for point in points:
-            self.setPixel(point, (0, 0, 255))
+        #for point in points:
+        #    self.setPixel(point, (0, 0, 255))
+
+    def drawFunction(self, function: Callable, color: Iterable[int], thickness: int=1):
+        pass
 
     def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
         pass
