@@ -5,7 +5,7 @@ from pygame.locals import *
 
 
 class PixelEngine:
-    def __init__(self, title, screen_height:int, screen_width:int, pixel_height:int, pixel_width:int, scaleing_factor:float=1, FPS=None):
+    def __init__(self, title, screen_height:int, screen_width:int, pixel_height:int, pixel_width:int, scaleing_factor:float=1, FPS=None, gamma=None):
         pygame.init()
         self.WINDOW_WIDTH = round(screen_width * scaleing_factor)
         self.WINDOW_HEIGHT = round(screen_height * scaleing_factor)
@@ -27,12 +27,11 @@ class PixelEngine:
 
         self.__keydown = False
         self.__isRunning = False
+        self.__gamma = gamma
         
-        if FPS is not None:
-            self.FPS = FPS
-            self.clock = pygame.time.Clock()
-        else:
-            self.FPS = None
+        self.FPS = FPS
+        self.clock = pygame.time.Clock()
+
 
     def drawScreen(self, screen):
         for x in range(self.WINDOW_WIDTH):
@@ -96,7 +95,27 @@ class PixelEngine:
 
     def setPixel(self, point: Iterable[int], color: Iterable[int]):
         if self.isInRangeXY(point[0], point[1]):
-            self.pixels[point[0]][point[1]] = color
+            if len(color) > 3:
+                if color[3] == 255:
+                    self.pixels[point[0]][point[1]] = color
+                    return
+            else:
+                self.pixels[point[0]][point[1]] = color
+                return
+                
+            ca = color[:3]
+            cb = self.pixels[point[0]][point[1]]
+            aa = (color[3] + 1) / 256
+            ab = (cb[3] + 1) / 256 if len(cb) > 3 else 1
+            ao = aa + ab * (1 - aa)
+            cb = cb[:3]
+            
+            
+            if self.__gamma is None:
+                self.pixels[point[0]][point[1]] = tuple([(ca[i] * aa + cb[i] * ab * (1 - aa)) / ao for i in range(3)]) + (ao,)
+            else:
+                self.pixels[point[0]][point[1]] = tuple([math.pow((math.pow(ca[i], self.__gamma) * aa + math.pow(cb[i], self.__gamma) * ab * (1 - aa)) / ao, 1 / self.__gamma) for i in range(3)]) + (ao,)
+                print(self.pixels[point[0]][point[1]])
 
     def setPixelXY(self, x: int, y: int, color: Iterable[int]):
         self.setPixel((x, y), color)
