@@ -429,8 +429,14 @@ class PixelEngine:
         #for point in points:
         #    self.setPixel(point, (0, 0, 255))
 
-    def drawFunction(self, function: Callable, color: Iterable[int], thickness: int=1):
-        pass
+    def drawFunction(self, function: Callable, color: Iterable[int], thickness: int=1, minX=None, maxX=None):
+        for x in range(0 if minX is None else minX, (self.WPW if maxX is None else maxX) + 1):
+            ys = function(x)
+            if hasattr(ys, '__iter__'):
+                for y in ys:
+                    self.setThickPixelXY(x, round(y), color, thickness)
+            else:
+                self.setThickPixelXY(x, round(ys), color, thickness)
 
     def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
         pass
