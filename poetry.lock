@@ -1,4 +1,24 @@
 [[package]]
+name = "numpy"
+version = "1.23.5"
+description = "NumPy is the fundamental package for array computing with Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "pillow"
+version = "9.3.0"
+description = "Python Imaging Library (Fork)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues (>=3.0.1)", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+
+[[package]]
 name = "pygame"
 version = "2.1.2"
 description = "Python Game Development"
@@ -9,7 +29,9 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ceabba9b684e4f2ab71d2d4da4968eba8c229599e1fa639f3b9b53711f3f4243"
+content-hash = "f71c2db65943b36e2779b432a5280f90e7c8baa5df75d61f6371514ba0414cbf"
 
 [metadata.files]
+numpy = []
+pillow = []
 pygame = []

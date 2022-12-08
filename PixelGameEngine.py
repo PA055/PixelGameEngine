@@ -1,8 +1,41 @@
-import pygame, sys, random, threading, math
+import pygame, sys, random, threading, math, os
+from PIL import Image
+import numpy as np
 from collections import Counter
 from typing import Callable, Iterable
 from pygame.locals import *
 
+class Pixel:
+    def __init__(self, r, g, b, a=None):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
+        self.color = (r, g, b) if a is None else (r, g, b, a)
+        self.interation = 0
+    def __getitem__(self, key):
+        return self.color[key]
+    def __iter__(self):
+        self.iteration = 0
+        return self
+    def __next__(self):
+        if self.iteration < len(self.color):
+            self.iteration += 1
+            return self.color[self.iteration - 1]
+        
+
+class Sprite:
+    def __init__(self, imagePath):
+        self.imagePath = imagePath
+        self.image = Image.open(imagePath)
+        self.height = self.image.size[1]
+        self.width = self.image.size[0]
+        self.loadedImage = self.image.load()
+        
+        data = []
+        for x in range(self.height):
+            data.append([self.loadedImage[x, y] for y in range(self.width)])
+        self.imageArray = data
 
 class PixelEngine:
     def __init__(self, title, screen_height:int, screen_width:int, pixel_height:int, pixel_width:int, scaleing_factor:float=1, FPS=None, gamma=None):
@@ -288,7 +321,7 @@ class PixelEngine:
 
     def fillCircleXY(self, x: int, y: int, radius: int, color: Iterable[int], border_color: Iterable[int], border_width: int = 0):
         self.fillCircle((x, y), radius, color, border_color, border_width)
-    
+
     def drawPolygon(self, color: Iterable[int], *corners: Iterable[int], thickness: int=1):
         if len(corners) < 1:
             return
@@ -386,7 +419,7 @@ class PixelEngine:
             return edges
 
         edges = getPolygonEdges(*corners)
-        print(dict(Counter([item for item in list(map(lambda point: point if point[1] == 15 else None, edges)) if item is not None])))
+		#print(dict(Counter([item for item in list(map(lambda point: point if point[1] == 15 else None, edges)) if item is not None])))
         minx = min(map(lambda x: x[0], corners))
         maxx = max(map(lambda x: x[0], corners))
         miny = min(map(lambda x: x[1], corners))
@@ -397,7 +430,6 @@ class PixelEngine:
                 if (x, y) in edges:
                     if edges.count((x, y)) & 1 == 1:
                         inside = not inside
-                
                 if inside:
                     self.setPixel((x, y), color)
         
@@ -442,8 +474,10 @@ class PixelEngine:
 
     def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
         pass
-    def drawSprite(self, point: Iterable[int], tint: Iterable[int], scale: float=1):
-        pass
+    def drawSprite(self, sprite: Sprite, point: Iterable[int], tint: Iterable[int]=None, scale: float=1):
+        spriteArray = sprite.imageArray
+        for y in range(len(spriteArray)):
+            for x in range(len(spriteArray[0])):
+                self.setPixelXY(x + point[0], y + point[1], spriteArray[x][y])
     # TODO text, sprite, color class
-
-    
+        
