@@ -452,8 +452,6 @@ class PixelEngine:
         edges = set()
         for t in range(0, accuracy + 1):
             p = tuple(map(round, Vbezier(t / accuracy)))
-            if not p in edges:
-                print(str(t / accuracy) + ':', p)
             edges.add(p)
         
         for point in edges:
