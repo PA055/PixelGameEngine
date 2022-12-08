@@ -9,8 +9,7 @@ Game.setBackground((0, 255, 255))
 
 
 def Start(game):
-    game.drawFunction(lambda x: math.sqrt(100 - (x - 20)*(x - 20)) + 20, (0, 0, 0), minX = 10, maxX=30)
-    '''
+
     game.fillRectXY(0, 0, 65, 5, (0, 0, 0))
     game.fillRectXY(0, 5, 65, 5, (255, 255, 255))
 
@@ -23,7 +22,7 @@ def Start(game):
     game.fillRectXY(44, 15, 22, 25, (0, 0, 255))
 
     game.drawLineXY(0, 15, 65, 15, (0, 0, 0))
-    '''
+
     #game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (61, -30), (32, 37), (60, 36), (5, 5))
     #game.fillPolygon((255, 0, 0), (22, 10), (40, 15), (52, 11), (36, 20), (34, 20), (34, 22), (30, 38), border_color=(0, 0, 0), border_width=1)
     pass
