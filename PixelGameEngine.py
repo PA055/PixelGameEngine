@@ -5,6 +5,7 @@ from collections import Counter
 from typing import Callable, Iterable
 from pygame.locals import *
 
+
 class Pixel:
     def __init__(self, r, g, b, a=None):
         self.r = r
@@ -21,9 +22,8 @@ class Pixel:
     def __next__(self):
         if self.iteration < len(self.color):
             self.iteration += 1
-            return self.color[self.iteration - 1]
-        
-
+            return self.color[self.iteration - 1]  
+  
 class Sprite:
     def __init__(self, imagePath):
         self.imagePath = imagePath
@@ -33,11 +33,15 @@ class Sprite:
         self.loadedImage = self.image.load()
         
         data = []
-        for x in range(self.height):
-            data.append([self.loadedImage[x, y] for y in range(self.width)])
+        for x in range(self.width):
+            data.append([self.loadedImage[x, y] for y in range(self.height)])
         self.imageArray = data
 
 class PixelEngine:
+    Text = Sprite('Font.png')
+    LetterWidths = {'a':8, 'b':8, 'c':8, 'd':8, 'e':8, 'f':8, 'g':8, 'h':8, 'i':6, 'j':8, 'k':8, 'l':8, 'm':10, 'n':8, 'o':8, 'p':8, 'q':8, 'r':8, 's':8, 't':10, 'u':8, 'v':10, 'w':10, 'x':8, 'y':10, 'z':8, '`':6, '1':6, '2':8, '3':8, '4':8, '5':8, '6':8, '7':8, '8':8, '9':8, '0':8, '-':6, '=':6, '~':8, '!':6, '@':10, '#':10, '$':10, '%':8, '^':6, '&':10, '*':6, '(':8, ')':8, '_':8, '+':6, '[':4, ']':4, '\\':8, '{':6, '}':6, '|':6, ';':6, "'":6, ':':6, '"':6, ',':6, '.':6, '/':8, '<':4, '>':4, '?':8}
+    LetterOffsets = {'a': 0, 'b': 10, 'c': 20, 'd': 30, 'e': 40, 'f': 50, 'g': 60, 'h': 70, 'i': 80, 'j': 88, 'k': 98, 'l': 108, 'm': 118, 'n': 130, 'o': 140, 'p': 150, 'q': 160, 'r': 170, 's': 180, 't': 190, 'u': 202, 'v': 212, 'w': 224, 'x': 236, 'y': 246, 'z': 258, '`': 268, '1': 276, '2': 284, '3': 294, '4': 304, '5': 314, '6': 324, '7': 334, '8': 344, '9': 354, '0': 364, '-': 374, '=': 382, '~': 390, '!': 400, '@': 408, '#': 420, '$': 432, '%': 444, '^': 454, '&': 462, '*': 474, '(': 482, ')': 492, '_': 502, '+': 512, '[': 520, ']': 526, '\\': 532, '{': 542, '}': 550, '|': 558, ';': 566, "'": 574, ':': 582, '"': 590, ',': 598, '.': 606, '/': 614, '<': 624, '>': 630, '?': 636}
+
     def __init__(self, title, screen_height:int, screen_width:int, pixel_height:int, pixel_width:int, scaleing_factor:float=1, FPS=None, gamma=None):
         pygame.init()
         self.WINDOW_WIDTH = round(screen_width * scaleing_factor)
@@ -64,7 +68,6 @@ class PixelEngine:
         
         self.FPS = FPS
         self.clock = pygame.time.Clock()
-
 
     def drawScreen(self, screen):
         for x in range(self.WINDOW_WIDTH):
@@ -456,8 +459,6 @@ class PixelEngine:
         
         for point in edges:
             self.setThickPixel(point, color, thickness)
-        #for point in points:
-        #    self.setPixel(point, (0, 0, 255))
 
     def drawFunction(self, function: Callable, color: Iterable[int], thickness: int=1, minX=None, maxX=None, minY=None, maxY=None):
         for x in range(0 if minX is None else minX, (self.WPW if maxX is None else maxX) + 1):
@@ -470,12 +471,30 @@ class PixelEngine:
                 if y >= (0 if minY is None else minY) and y < ((self.WPH + 1) if maxY is None else maxY):
                     self.setThickPixelXY(x, round(ys), color, thickness)
 
-    def drawString(self, point: Iterable[int], color: Iterable[int], scale: float=1):
-        pass
-    def drawSprite(self, sprite: Sprite, point: Iterable[int], tint: Iterable[int]=None, scale: float=1):
+    def drawString(self, string: str, point: Iterable[int], color: Iterable[int], scale: float=1):
+        letterOffset = 0
+        lineOffset = 0
+        for letter in string.lower():
+            if letter in self.LetterWidths.keys():
+                self.drawPartialSprite(self.Text, (point[0] + letterOffset, point[1] + lineOffset), self.LetterOffsets[letter], 0, self.LetterWidths[letter], 10)
+                letterOffset += self.LetterWidths[letter] + 2
+            else:
+                if letter == ' ':
+                    letterOffset += 4
+                if letter == '\n':
+                    lineOffset += 12
+                    letterOffset = 0
+
+    def drawSprite(self, sprite: Sprite, point: Iterable[int], scale: float=1):
         spriteArray = sprite.imageArray
-        for y in range(len(spriteArray)):
-            for x in range(len(spriteArray[0])):
+        for y in range(sprite.height):
+            for x in range(sprite.width):
                 self.setPixelXY(x + point[0], y + point[1], spriteArray[x][y])
+    
+    def drawPartialSprite(self, sprite: Sprite, startingPoint: Iterable[int], ox: int, oy:int, w: int, h: int, scale: float=1):
+        spriteArray = sprite.imageArray
+        for y in range(h):
+            for x in range(w):
+                self.setPixelXY(x + startingPoint[0], y + startingPoint[1], spriteArray[x + ox][y + oy])
     # TODO text, sprite, color class
         

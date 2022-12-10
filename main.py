@@ -4,13 +4,17 @@ from PixelGameEngine import PixelEngine, Sprite, Pixel
 
 xpos = 0
 
-Game = PixelEngine('Test', 480, 780, 12, 12, scaleing_factor=0.5, FPS=60)
+Game = PixelEngine('Test', 480, 780, 12, 12, scaleing_factor=1, FPS=60)
 Game.setBackground((0, 255, 255))
 
 
 def Start(game):
-    thing = Sprite('Thingy.png')
-    game.drawSprite(thing, (2, 2))
+    #thing = Sprite('Font.png')
+    #thing = Sprite('Thingy.png')
+    #game.drawPartialSprite(thing, (2, 2), 0, 0, 8, 10)
+
+    game.drawString('HellO\nWorld!', (1, 1), (0, 0, 0))
+
     '''
     game.fillRectXY(0, 0, 65, 5, (0, 0, 0))
     game.fillRectXY(0, 5, 65, 5, (255, 255, 255))
