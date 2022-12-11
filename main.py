@@ -13,7 +13,7 @@ def Start(game):
     #thing = Sprite('Thingy.png')
     #game.drawPartialSprite(thing, (2, 2), 0, 0, 8, 10)
 
-    game.drawString('HellO\nWorld!', (1, 1), (0, 0, 0))
+    game.drawString('HellO\nWorld!', (1, 1), (255, 0, 0))
 
     '''
     game.fillRectXY(0, 0, 65, 5, (0, 0, 0))

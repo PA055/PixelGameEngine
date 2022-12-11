@@ -31,14 +31,29 @@ class Sprite:
         self.height = self.image.size[1]
         self.width = self.image.size[0]
         self.loadedImage = self.image.load()
-        
+        self.generateArray()
+
+    def generateArray(self):
         data = []
         for x in range(self.width):
             data.append([self.loadedImage[x, y] for y in range(self.height)])
         self.imageArray = data
 
+    def replaceColor(self, color, withColor):
+        data = self.image.getdata()
+        newData = []
+        for item in data:
+            if item == color:
+                newData.append(withColor)
+            else:
+                newData.append(item)
+
+        self.image.putdata(newData)
+        self.loadedImage = self.image.load()
+        self.generateArray()
+
+
 class PixelEngine:
-    Text = Sprite('Font.png')
     LetterWidths = {'a':8, 'b':8, 'c':8, 'd':8, 'e':8, 'f':8, 'g':8, 'h':8, 'i':6, 'j':8, 'k':8, 'l':8, 'm':10, 'n':8, 'o':8, 'p':8, 'q':8, 'r':8, 's':8, 't':10, 'u':8, 'v':10, 'w':10, 'x':8, 'y':10, 'z':8, '`':6, '1':6, '2':8, '3':8, '4':8, '5':8, '6':8, '7':8, '8':8, '9':8, '0':8, '-':6, '=':6, '~':8, '!':6, '@':10, '#':10, '$':10, '%':8, '^':6, '&':10, '*':6, '(':8, ')':8, '_':8, '+':6, '[':4, ']':4, '\\':8, '{':6, '}':6, '|':6, ';':6, "'":6, ':':6, '"':6, ',':6, '.':6, '/':8, '<':4, '>':4, '?':8}
     LetterOffsets = {'a': 0, 'b': 10, 'c': 20, 'd': 30, 'e': 40, 'f': 50, 'g': 60, 'h': 70, 'i': 80, 'j': 88, 'k': 98, 'l': 108, 'm': 118, 'n': 130, 'o': 140, 'p': 150, 'q': 160, 'r': 170, 's': 180, 't': 190, 'u': 202, 'v': 212, 'w': 224, 'x': 236, 'y': 246, 'z': 258, '`': 268, '1': 276, '2': 284, '3': 294, '4': 304, '5': 314, '6': 324, '7': 334, '8': 344, '9': 354, '0': 364, '-': 374, '=': 382, '~': 390, '!': 400, '@': 408, '#': 420, '$': 432, '%': 444, '^': 454, '&': 462, '*': 474, '(': 482, ')': 492, '_': 502, '+': 512, '[': 520, ']': 526, '\\': 532, '{': 542, '}': 550, '|': 558, ';': 566, "'": 574, ':': 582, '"': 590, ',': 598, '.': 606, '/': 614, '<': 624, '>': 630, '?': 636}
 
@@ -141,8 +156,8 @@ class PixelEngine:
                 
             ca = color[:3]
             cb = self.pixels[point[0]][point[1]]
-            aa = (color[3] + 1) / 256
-            ab = (cb[3] + 1) / 256 if len(cb) > 3 else 1
+            aa = color[3] / 255
+            ab = cb[3] / 255 if len(cb) > 3 else 1
             ao = aa + ab * (1 - aa)
             cb = cb[:3]
             
@@ -472,11 +487,14 @@ class PixelEngine:
                     self.setThickPixelXY(x, round(ys), color, thickness)
 
     def drawString(self, string: str, point: Iterable[int], color: Iterable[int], scale: float=1):
+        text = Sprite('Font.png')
+        if color != (0, 0, 0, 255):
+            text.replaceColor((0, 0, 0, 255), color)
         letterOffset = 0
         lineOffset = 0
         for letter in string.lower():
             if letter in self.LetterWidths.keys():
-                self.drawPartialSprite(self.Text, (point[0] + letterOffset, point[1] + lineOffset), self.LetterOffsets[letter], 0, self.LetterWidths[letter], 10)
+                self.drawPartialSprite(text, (point[0] + letterOffset, point[1] + lineOffset), self.LetterOffsets[letter], 0, self.LetterWidths[letter], 10)
                 letterOffset += self.LetterWidths[letter] + 2
             else:
                 if letter == ' ':
