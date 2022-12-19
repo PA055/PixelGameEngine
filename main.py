@@ -1,6 +1,6 @@
 import pygame, sys, random, math
 from pygame.locals import *
-from PixelGameEngine.src.PixelGameEngine_Myself0.PixelGameEngine import PixelEngine, Sprite, Color
+from PixelGameEngine.src.PixelGameEngine_Myself0.PixelGameEngine import *
 
 xpos = 0
 
@@ -9,11 +9,10 @@ Game.setBackground((0, 255, 255))
 
 
 def Start(game):
-    #thing = Sprite('Font.png')
-    #thing = Sprite('Thingy.png')
-    #game.drawPartialSprite(thing, (2, 2), 0, 0, 8, 10)
+    thing = Sprite('Font.png')
+    game.drawPartialSprite(thing, (2, 2), 0, 0, 16, 20, scale=2)
 
-    game.drawString('HellO\nWorld!', (1, 1), Color.RED)
+    #game.drawString('HellO\nWorld!', (1, 1), Color.RED)
 
     '''
     game.fillRectXY(0, 0, 65, 5, (0, 0, 0))
@@ -31,7 +30,7 @@ def Start(game):
     '''
     #game.drawBezierCurve((0, 0, 0), (2, 3), (1, 31), (61, -30), (32, 37), (60, 36), (5, 5))
     #game.fillPolygon((255, 0, 0), (22, 10), (40, 15), (52, 11), (36, 20), (34, 20), (34, 22), (30, 38), border_color=(0, 0, 0), border_width=1)
-    pass
+    return True
 
 def Update(game):
     keysDown = game.getKeyPressed()
